@@ -1,13 +1,11 @@
 const dotenv = require("dotenv").config();
 var Spotify = require('node-spotify-api');
-const Twitter = require('twitter');
 const keys = require('./keys.js');
 var request = require('request');
 var fs = require('fs');
 
 
 var spotify = new Spotify(keys.spotify);
-var client = new Twitter(keys.twitter);
 var omdbKey = keys.omdb.api_key;
 
 
@@ -15,9 +13,6 @@ const command = process.argv[2];
 const secondCommand = process.argv[3];
 
 switch (command) {
-    case ('my-tweets'):
-        getTweets();
-        break;
     case ('spotify-this-song'):
         if (secondCommand) {
             spotifyThisSong(secondCommand);
@@ -32,25 +27,11 @@ switch (command) {
             omdb("Crazy, Stupid, Love.");
         }
         break;
-    case ('do-what-it-says'):
-        doThing();
-        break;
     default:
         console.log('Try again');
 };
 
 
-function getTweets() {
-    client.get('statuses/home_timeline', function (error, tweets, response) {
-        if (error) throw error;
-        console.log("________________________________________");
-
-        const tweets_parsed = tweets.map(word => word.text);
-        tweets_parsed.forEach(function (element) {
-            console.log(element);
-        });
-    });
-}
 function spotifyThisSong(song) {
     spotify.search({ type: 'track', query: song, limit: 1 }, function (error, data) {
         if (!error) {
@@ -101,11 +82,3 @@ function omdb(movie) {
     });
 
 }
-function doThing() {
-    fs.readFile('random.txt', "utf8", function (error, data) {
-        var txt = data.split(',');
-
-        spotifyThisSong(txt[1]);
-    });
-}
-

@@ -8,13 +8,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/be04zimm/LIRI-Bot.git"
+    "url": "git+https://github.com/be04zimm/liri-bot.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/be04zimm/LIRI-Bot/issues"
+    "url": "https://github.com/be04zimm/liri-bot/issues"
   },
-  "homepage": "https://github.com/be04zimm/LIRI-Bot#readme"
+  "homepage": "https://github.com/be04zimm/liri-bot#readme"
 }
