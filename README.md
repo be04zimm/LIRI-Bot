@@ -3,6 +3,7 @@ LIRI = Language Interpretation and Recognition Interface. LIRI is a command line
 
 #### Steps to Run Application:
 - In your command line, run the following:
-     - NPM init -- yes
-     - NPM i
-     - NPM i dotenv
+     - npm init -y (creates package.json file)
+     - npm i (installs node packages)
+     - npm i dotenv (installs dotenv)
+     - npm install --save node-spotify-api
