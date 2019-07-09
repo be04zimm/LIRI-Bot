@@ -10,6 +10,8 @@ Run this Node.js app from your command line!  This app listens to user input and
 - node liri.js movie-this \<\<MOVIE TITLE HERE>>
      
 ![](spotify_example.gif)
+
+
 [Link to video example of Spotify-this-song in action!](liri-bot_spotify-example.mov)
 
 #### Steps to Run Application:
