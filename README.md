@@ -4,10 +4,10 @@
 
 Run this Node.js app from your command line!  This app listens to user input and returns songs, concerts, and movies based on user request. 
 
-Possible Searches:
-node liri.js spotify-this-song \<\<SONG TITLE HERE>>
-node liri.js concert-this \<\<ARTIST NAME HERE>>
-node liri.js movie-this \<\<MOVIE TITLE HERE>>
+**Possible Searches:**
+- node liri.js spotify-this-song \<\<SONG TITLE HERE>>
+- node liri.js concert-this \<\<ARTIST NAME HERE>>
+- node liri.js movie-this \<\<MOVIE TITLE HERE>>
      
 ![](spotify_example.gif)
 [Link to video example of Spotify-this-song in action!](liri-bot_spotify-example.mov)
