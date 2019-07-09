@@ -9,7 +9,7 @@ node liri.js spotify-this-song <<SONG TITLE HERE>>
 node liri.js concert-this <<ARTIST NAME HERE>>
 node liri.js movie-this <<MOVIE TITLE HERE>>
      
-     
+[Link to video example of Spotify-this-song in action!](liri-bot_spotify-example.mov)
 
 #### Steps to Run Application:
 ```
