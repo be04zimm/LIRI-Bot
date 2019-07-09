@@ -1,84 +1,137 @@
-const dotenv = require("dotenv").config();
-var Spotify = require('node-spotify-api');
-const keys = require('./keys.js');
-var request = require('request');
-var fs = require('fs');
-
-
+require("dotenv").config();
+var fs = require("fs")
+var keys = require("./keys.js");
+var axios = require("axios");
+var Spotify = require("node-spotify-api");
+var moment = require("moment");
 var spotify = new Spotify(keys.spotify);
-var omdbKey = keys.omdb.api_key;
 
+userCom();
 
-const command = process.argv[2];
-const secondCommand = process.argv[3];
+function userCom() {
 
-switch (command) {
-    case ('spotify-this-song'):
-        if (secondCommand) {
-            spotifyThisSong(secondCommand);
+    var userInp = process.argv[2];
+    var userSearch = process.argv.slice(3).join(" ");
+
+    if (userInp === "concert-this") {
+        if (userSearch) {
+            concertThis(userSearch);
         } else {
-            spotifyThisSong("My Heart Will Go On");
+            console.log("Name of band or artist needed");
         }
-        break;
-    case ('movie-this'):
-        if (secondCommand) {
-            omdb(secondCommand);
-        } else {
-            omdb("Crazy, Stupid, Love.");
-        }
-        break;
-    default:
-        console.log('Try again');
-};
+    }
+    else if (userInp === "spotify-this-song") {
+        if (userSearch) {
+            spotifyThisSong(userSearch);
 
-
-function spotifyThisSong(song) {
-    spotify.search({ type: 'track', query: song, limit: 1 }, function (error, data) {
-        if (!error) {
-            for (var i = 0; i < data.tracks.items.length; i++) {
-                var songData = data.tracks.items[i];
-                //artist
-                console.log("Artist: " + songData.artists[0].name);
-                //song name
-                console.log("Song: " + songData.name);
-                //spotify preview link
-                console.log("Preview URL: " + songData.preview_url);
-                //album name
-                console.log("Album: " + songData.album.name);
-                console.log("-----------------------");
-            }
         } else {
-            console.log('Error occurred.');
+            spotifyThisSong("The Sign Ace of Base");
         }
-    });
+    }
+    else if (userInp === "movie-this") {
+        if (userSearch) {
+            movieThis(userSearch);
+        } else {
+            movieThis("Mr. Nobody");
+        }
+    }
+    else if (userInp === "do-what-it-says") {
+        doWhatItSays();
+    }
+    else {
+        console.log("not a valid argument");
+    }
 }
 
-function omdb(movie) {
-    var omdbURL = 'http://www.omdbapi.com/?t=' + movie + '&apikey=' + omdbKey + '&plot=short&tomatoes=true';
+function concertThis(artist) {
+    console.log("Searching for " + artist);
 
-    request(omdbURL, function (error, response, body) {
-        if (!error && response.statusCode == 200) {
-            var body = JSON.parse(body);
+    axios.get("https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp")
+        .then(
 
-            console.log("Title: " + body.Title);
-            console.log("Release Year: " + body.Year);
-            console.log("IMdB Rating: " + body.imdbRating);
-            console.log("Country: " + body.Country);
-            console.log("Language: " + body.Language);
-            console.log("Plot: " + body.Plot);
-            console.log("Actors: " + body.Actors);
-            console.log("Rotten Tomatoes Rating: " + body.tomatoRating);
-            console.log("Rotten Tomatoes URL: " + body.tomatoURL);
+            function (response) {
 
-        } else {
-            console.log('Error occurred.')
+                var results = response.data;
+
+                for (var i = 0; i < results.length; i++) {
+
+                    var venue = results[i].venue;
+                    var eventDate = moment(results[i].datetime).format("MM/DD/YYYY");
+
+                    console.log("\n" + venue.name);
+                    console.log(venue.city + ", " + venue.country);
+                    console.log(eventDate);
+                }
+                console.log("\nEnd of list for " + artist);
+            }
+        );
+
+}
+
+function spotifyThisSong(song) {
+
+    console.log("\nSpotifying song " + song);
+
+    spotify.search(
+        {
+            type: 'track',
+            query: song
+        },
+
+        function (err, data) {
+            if (err) {
+                return console.log('Error occurred: ' + err);
+            }
+
+            var results = data.tracks.items[0];
+
+            console.log("\n" + results.artists[0].name);
+            console.log(results.name);
+            console.log(results.preview_url);
+            console.log(results.album.name);
         }
-        if (movie === "Mr. Nobody") {
-            console.log("-----------------------");
-            console.log("If you haven't watched 'Mr. Nobody,' then you should: http://www.imdb.com/title/tt0485947/");
-            console.log("It's on Netflix!");
+    );
+}
+
+function movieThis(title) {
+    console.log("\nSearching for movie " + title);
+
+    var queryURL = "http://www.omdbapi.com/?t=" + title + "&y=&plot=short&apikey=frozen"
+
+    axios.get(queryURL).then(
+        function (response) {
+
+            console.log("\n" + response.data.Title);
+            console.log(response.data.Year);
+            console.log(response.data.Ratings[0].Source + " " + response.data.Ratings[0].Value);
+            console.log(response.data.Ratings[1].Source + " " + response.data.Ratings[1].Value);
+            console.log(response.data.Country);
+            console.log(response.data.Language);
+            console.log(response.data.Plot);
+            console.log(response.data.Actors);
 
         }
+    );
+
+}
+
+function doWhatItSays() {
+    console.log("\nDoing what it says...");
+
+    fs.readFile("random.txt", "utf8", function (error, data) {
+
+        if (error) {
+            return console.log(error);
+        }
+
+        var dataArr = data.split(",");
+
+        userInp = dataArr[0];
+        userSearch = dataArr[1];
+
+        console.log("\n" + userInp + " " + userSearch);
+
+        spotifyThisSong(userSearch);
+
     });
-
 }
