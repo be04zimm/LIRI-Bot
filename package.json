@@ -22,7 +22,7 @@
     "dotenv": "^7.0.0",
     "key": "^0.1.11",
     "keys.js": "^1.0.2",
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "node-spotify-api": "^1.0.7",
     "spotify-web-api-node": "^4.0.0"
   }
